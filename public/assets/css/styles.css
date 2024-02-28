@@ -52,6 +52,7 @@ button {
 
 img#logo {
   width: 200px;
+  margin-left: -40px;
   border: none;
   transition: transform 0.5s ease-in-out;
 }
@@ -89,4 +90,21 @@ img#logo {
 
 .stop-spin {
   animation: decelerate 1s forwards;
+}
+
+#counter {
+  display: block;
+}
+
+.message-box {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #eee;
+  color: #333;
+  border-radius: 8px;
+  padding: 16px 32px;
+  min-width: 120px;
+  margin: 16px auto;
+  display: none;
 }
