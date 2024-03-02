@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 
-import routes from "../../routes";
+import routes from "./routes";
 
 export class ExpressApp {
   public instance: Application;
