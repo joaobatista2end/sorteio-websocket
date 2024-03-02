@@ -43,15 +43,11 @@ function setCountDown(count, end) {
 function setClientState(state, code = "") {
   // Início da animação
   body.className = "main";
-  messageDiv.classList.toggle("hide-message", true);
-  logo.classList.toggle("stop-spin", false);
-  logo.classList.toggle("spin-animation", true);
-  counter.innerHTML = 'Aguardando sorteio...';
 
   if (state === "win") {
     body.classList.add("win");
     messageDiv.innerHTML = `😜 <br> You win! Confimation code is ${code}`;
-    vibratePhone(1000);
+    // vibratePhone(1000);
   } else if (state === "lose") {
     body.classList.add("lose");
     messageDiv.innerHTML = `😥 <br> You lose! `;

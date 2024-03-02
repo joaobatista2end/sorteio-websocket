@@ -1,8 +1,8 @@
 import http, { Server as HttpServer } from "http";
 
+import { ExpressApp } from "../infra/http";
+import { WebSocketApp } from "../infra/websocket";
 import { env } from "../validations/environment";
-import { ExpressApp } from "./express-app";
-import { WebSocketApp } from "./websocket-app";
 
 export class App {
   private httpServer: HttpServer;

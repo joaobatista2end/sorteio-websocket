@@ -5,8 +5,3 @@ export enum WebSocketActions {
   COUNTDOWN = "countdown",
   RESULT = "result",
 }
-
-export enum WebSocketEvents {
-  MESSAGE = "message",
-  CLOSE = "close",
-}

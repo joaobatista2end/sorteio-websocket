@@ -1,11 +1,10 @@
-import { WebSocketActions } from "../enums";
-import { WebsocketUserClient } from "../websocket-app";
-import { ActionStrategy } from "./actions/action";
-import { AddUsersAction } from "./actions/add-users.action";
-import { AdminAction } from "./actions/admin.action";
-import { CountDownAction } from "./actions/countdown.action";
-import { DrawAction } from "./actions/draw.action";
-import { UpdateAdminCountAction } from "./actions/update-admin-count.action";
+import { AdminAction } from "../../domain/actions/admin.action";
+import { CountDownAction } from "../../domain/actions/countdown.action";
+import { DrawAction } from "../../domain/actions/draw.action";
+import { UpdateAdminCountAction } from "../../domain/actions/update-admin-count.action";
+import { WebSocketActions } from "../../domain/enums/websocket-actions.enum";
+import { WebsocketUserClient } from "../../domain/types/websocket-user-client.type";
+import { Action } from "./action";
 
 export type ServerWebsocketActions =
   | WebSocketActions.ADMIN
@@ -13,26 +12,32 @@ export type ServerWebsocketActions =
   | WebSocketActions.CLIENT_COUNT_UPDATE
   | WebSocketActions.COUNTDOWN;
 
-const actions: Record<ServerWebsocketActions, ActionStrategy> = {
+const actions: Record<ServerWebsocketActions, Action> = {
   [WebSocketActions.ADMIN]: new AdminAction(),
   [WebSocketActions.DRAW]: new DrawAction(),
   [WebSocketActions.CLIENT_COUNT_UPDATE]: new UpdateAdminCountAction(),
   [WebSocketActions.COUNTDOWN]: new CountDownAction(),
 };
 
-export const ActionFactoryMethod = (
-  user: WebsocketUserClient,
-  msg: string = "{}"
-) => {
-  const data = JSON.parse(msg);
-  const action = data?.action as ServerWebsocketActions;
-  console.log("******************************");
-  console.log({ data, action });
+export interface ActionFactoryExecuteParams {
+  user: WebsocketUserClient;
+  message?: string;
+  websocketUserClients: Array<WebsocketUserClient>;
+}
 
-  if (!action || !(action in actions)) {
-    new AddUsersAction().execute(user, null);
-    return;
+export class ActionFactory {
+  public execute(params: ActionFactoryExecuteParams) {
+    const data = JSON.parse(params?.message || "");
+    const action = data?.action as ServerWebsocketActions;
+
+    if (!action || !(action in actions)) {
+      return;
+    }
+
+    actions[action].execute({
+      data,
+      user: params.user,
+      websocketUserClients: params.websocketUserClients,
+    });
   }
-  actions[action].execute(user, data);
-  console.log("******************************");
-};
+}
